@@ -11,7 +11,7 @@ import { AccountsComponent } from './accounts/accounts.component';
 import { BmiComponent } from './bmi/bmi.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { VehicleDetailsComponent } from './vehicle-details/vehicle-details.component';
 import { CreateVehicleComponent } from './create-vehicle/create-vehicle.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +26,10 @@ import { ParentComponent } from './parent/parent.component';
 import { ChildComponent } from './child/child.component';
 import { RatingComponent } from './rating/rating.component';
 import { TextAreaComponent } from './text-area/text-area.component';
+import { CapitalDirective } from './capital.directive';
+import { BalancePipe } from './balance.pipe';
+import { TokenInterceptor } from './token.interceptor';
+import { AboutUsModule } from './about-us/about-us.module';
 
 @NgModule({
   declarations: [
@@ -51,16 +55,25 @@ import { TextAreaComponent } from './text-area/text-area.component';
          ParentComponent,
          ChildComponent,
          RatingComponent,
-         TextAreaComponent
+         TextAreaComponent,
+         CapitalDirective,
+         BalancePipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AboutUsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:TokenInterceptor,
+      multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
