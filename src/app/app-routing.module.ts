@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { AccountsComponent } from './accounts/accounts.component';
@@ -14,6 +14,7 @@ import { AuthenticationGuard } from './authentication.guard';
 import { CardComponent } from './card/card.component';
 import { Sibling1Component } from './sibling1/sibling1.component';
 import { ParentComponent } from './parent/parent.component';
+import { CapitalDirective } from './capital.directive';
 
 const routes: Routes = [
   {path:'dashboard',component:DashboardComponent,canActivate:[AuthenticationGuard],children:[
@@ -29,6 +30,10 @@ const routes: Routes = [
         {path:'vehicle-details/:id',component:VehicleDetailsComponent},
         {path:'create-vehicle',component:CreateVehicleComponent},
         {path:'edit-vehicle/:id',component:CreateVehicleComponent},
+        {
+          path:'payments',
+          loadChildren: () => import('./payments/payments.module').then(m => m.PaymentsModule)
+        }
   ]}, 
      
   {path:'login',component:LoginComponent},
@@ -36,7 +41,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{preloadingStrategy:PreloadAllModules})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
